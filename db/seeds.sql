@@ -23,3 +23,5 @@ VALUES
     ("Sous Chef", .50, 4),
     ("Server", .50, 4),
     ("Dishwasher", .25, 4);
+
+    
