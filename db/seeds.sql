@@ -62,6 +62,6 @@ INSERT INTO employees (first_name, last_name, role_id, manager_id)
     ("Hokey", "Elfson", 15, 31),
     ("Cyclona", "Cicle", 15, 31),
     ("Nolly", "Noley", 16, 31),
-    ("Neara", "Nahla", 16, 31)
+    ("Neara", "Nahla", 16, 31);
 
 

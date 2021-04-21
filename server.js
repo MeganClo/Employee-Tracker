@@ -1,13 +1,17 @@
 
-const inquirer = require("inquirer");
-const cTable = require('console.table');
-const db = require("./db/connection");
+const inquirer = require('inquirer');
+const { getDepartments } = require("./utils/department");
+const { getEmployees } = require("./utils/employee");
+const starterQuestion = require("./utils/inquirer");
 
-// Start server after DB connection
-db.connect(err => {
-  if (err) throw err;
-  console.log('Database connected.');
-  app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-  });
-});
+// getDepartments();
+
+getEmployees();
+
+// const start = () => {
+//   inquirer.prompt(starterQuestion);
+//   console.log("questions");
+// };
+
+// start();
+
