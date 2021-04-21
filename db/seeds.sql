@@ -29,7 +29,7 @@ INSERT INTO employees (first_name, last_name, role_id, manager_id)
     ("Albus", "Dumbledore", 1, NULL),
     ("Minerva", "McGonagall", 2, 1),
     ("Rubeus", "Hagrid", 2, 1),
-    ("Poppy Pomfrey", "McGonagall", 3, 1),
+    ("Poppy", "Pomfrey", 3, 1),
     ("Severus", "Snape", 2, 1),
     ("Filius", "Flitwick", 2, 1),
     ("Pomona", "Sprout", 2, 1),
