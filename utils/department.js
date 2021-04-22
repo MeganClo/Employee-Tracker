@@ -27,7 +27,6 @@ const addDepartment = () => {
 };
 
 // Delete a department
-
 const deleteDepartment = () => {
     const sql = `DELETE FROM departments WHERE id = ?;`;
     let params = 5;
@@ -35,19 +34,17 @@ const deleteDepartment = () => {
         if (err) {
             console.log(err);
             return;
-        } else if (!result.affectedRows) {
-            console.log("Department not found");
-        } else {
-            console.log("Department deleted")
+        } console.log("Department deleted");
             getDepartments();
-            
-        };
-});
+    })
+};
+
   
 
 
 
 module.exports = {
     getDepartments,
-    addDepartment
+    addDepartment,
+    deleteDepartment
 };

@@ -8,10 +8,12 @@ const getEmployees = () => {
     CONCAT (employees.first_name, " ", employees.last_name) AS "Name",
     role.title,
     departments.department_name,
-    role.salary
+    role.salary,
+    CONCAT(manager.first_name, " " , manager.last_name) AS "Manager"
     FROM employees
-    INNER JOIN role on employees.role_id=role.id
-    INNER JOIN departments on role.department_id=departments.id;`;
+    LEFT JOIN role on employees.role_id=role.id
+    LEFT JOIN departments on role.department_id=departments.id
+    LEFT JOIN employees manager on manager.id = employees.manager_id;`;
     db.query(sql, (err, rows) => {
       if (err) {
         console.log(err);
