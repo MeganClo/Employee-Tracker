@@ -1,12 +1,16 @@
-
 const inquirer = require('inquirer');
-const { getDepartments } = require("./utils/department");
+const { getDepartments, addDepartment } = require("./utils/department");
 const { getEmployees } = require("./utils/employee");
+const { getRoles } = require("./utils/role");
 const starterQuestion = require("./utils/inquirer");
 
-// getDepartments();
+
+addDepartment();
+getDepartments();
 
 getEmployees();
+
+getRoles();
 
 // const start = () => {
 //   inquirer.prompt(starterQuestion);
