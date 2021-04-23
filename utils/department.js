@@ -2,7 +2,9 @@ const db = require("../db/connection");
 
 // Get all departments
 const getDepartments = () => {
-    const sql = `SELECT * FROM departments;`;
+    const sql = `SELECT
+    departments.id,
+    departments.department_name AS "Department" FROM departments;`;
     db.query(sql, (err, rows) => {
       if (err) {
         console.log(err);
@@ -22,7 +24,7 @@ const addDepartment = () => {
             console.log(err);
             return;
         }
-        console.table(result);
+        getDepartments();
         });
 };
 
