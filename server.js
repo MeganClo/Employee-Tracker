@@ -2,7 +2,7 @@ const inquirer = require('inquirer');
 const { getDepartments, addDepartment, deleteDepartment } = require("./utils/department");
 const { getEmployees, deleteEmployee, getOneEmployee, addEmployee, getEmployeesByManager } = require("./utils/employee");
 const { getRoles, addRole, deleteRole } = require("./utils/role");
-const { starterQuestion, whichViewAll, departmentAdd, whichAdd } = require("./utils/inquirer");
+const { starterQuestion, whichViewAll, departmentAdd, whichAdd, checkQuestion, roleAdd } = require("./utils/inquirer");
 
 // function that gets to start application off
 const start = () => {
@@ -16,6 +16,12 @@ const start = () => {
     }
   })
 };
+
+// prompt to check if things were entered correctly
+const answerCheck = () => {
+  return inquirer.prompt(checkQuestion)
+};
+
 
 // function called when user wants to view all of something
 const viewAll = () => {
@@ -38,17 +44,47 @@ const addingStuff = () => {
   return inquirer.prompt(whichAdd)
   .then (response => {
     if (response.addAWhat === "Add a department"){
-      return inquirer.prompt(departmentAdd)
-      .then (response => {
-      params = response.addDepartment;
-      addDepartment();
-      })
+      deptAdd();
     }
     if (response.addAWhat === "Add a role") {
-
+      roleAdder();
     }
   })
 };
 
+// function to add departments
+const deptAdd = () => {
+  return inquirer.prompt(departmentAdd)
+  .then (response => {
+    params = response.addDepartment;
+    console.log(response.addDepartment);
+    answerCheck()
+    .then (answerCheckData => {
+      if (answerCheckData.check === "Yes, take me to the next step."){
+        addDepartment();
+      } else {deptAdd();}
+    })
+    .catch(err => {
+      console.log(err);
+    })
+  })
+};
+
+const roleAdder = () => {
+  return inquirer.prompt(roleAdd)
+  .then (response => {
+    params = [response.roleName, response.roleSalary, response.roleId];
+    console.table(params);
+    answerCheck()
+    .then(answerCheckData => {
+      if (answerCheckData.check === "Yes, take me to the next step.") {
+        addRole();
+      } else {roleAdder();}
+    })
+    .catch(err => {
+      console.log(err);
+    })
+  })
+}
 
 start();

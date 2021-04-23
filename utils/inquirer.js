@@ -60,7 +60,7 @@ const whichAdd = [
     }
 ];
 
-// Prompt to get department info
+// Prompt to get new department info
 const departmentAdd = [
     {
         type: "input",
@@ -70,12 +70,56 @@ const departmentAdd = [
             if (addDepartmentInput) {
                 return true;
             } else {
-                console.log("You must enter a department name")
+                console.log("You must enter a department name.")
                 return false;
             }
         }
     }
 ];
+
+// Prompt to get role info
+const roleAdd = [
+    {
+        type: "input",
+        name: "roleName",
+        message: "Please enter the name of the new role/title.",
+        validate: roleNameInput => {
+            if (roleNameInput) {
+                return true;
+            } else {
+                console.log("You must enter a name for the role you want to add.")
+                return false;
+            }
+        }
+    },
+    {
+        type: "input",
+        name: "roleSalary",
+        message: "What is the salary for this new role?",
+        validate: roleSalaryInput => {
+            if (roleSalaryInput) {
+                return true;
+            } else {
+                console.log("You must enter a salary for this role.")
+                return false;
+            }
+        }
+    },
+    {
+        type: "input",
+        name: "roleId",
+        message: "What is the id for this new role",
+        validate: roleIdInput => {
+            if (roleIdInput) {
+                return true;
+            } else {
+                console.log("You must enter an id for this role")
+                return false;
+            }
+        }
+
+    }
+]
 
 
 module.exports = {
@@ -83,5 +127,6 @@ module.exports = {
     checkQuestion,
     whichViewAll,
     departmentAdd,
-    whichAdd
+    whichAdd,
+    roleAdd
 };

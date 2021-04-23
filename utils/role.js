@@ -21,7 +21,7 @@ const getRoles = () => {
 // Add a role
 const addRole = () => {
   const sql = `INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?);`;
-  let params = ["Quidditch Coach", 400.00, 1];
+  // let params = ["Quidditch Coach", 400.00, 1];
   db.query(sql, params, (err, result) => {
       if (err) {
           console.log(err);
