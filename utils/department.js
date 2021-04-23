@@ -1,4 +1,5 @@
 const db = require("../db/connection");
+const { starterQuestion } = require("./inquirer");
 
 // Get all departments
 const getDepartments = () => {
@@ -11,14 +12,13 @@ const getDepartments = () => {
         return;
       }
       console.table(rows);
-      
     });
 };
 
 // Add a department
 const addDepartment = () => {
     const sql = `INSERT INTO departments (department_name) VALUES (?);`;
-    let params = "Sports";
+    // let params = "Sports";
     db.query(sql, params, (err, result) => {
         if (err) {
             console.log(err);
