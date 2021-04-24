@@ -119,6 +119,18 @@ const roleAdd = [
         }
 
     }
+];
+
+const after = [
+    {
+        type: "list",
+        name: "after",
+        message: "What would you like to do now?",
+        choices: [
+            "Main Menu",
+            "Quit"
+        ]
+    }
 ]
 
 
@@ -128,5 +140,6 @@ module.exports = {
     whichViewAll,
     departmentAdd,
     whichAdd,
-    roleAdd
+    roleAdd,
+    after
 };

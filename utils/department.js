@@ -1,6 +1,8 @@
 const db = require("../db/connection");
-const { starterQuestion } = require("./inquirer");
 
+const inquirer = require('inquirer');
+
+// console.log(afterChoice);
 // Get all departments
 const getDepartments = () => {
     const sql = `SELECT
@@ -12,6 +14,7 @@ const getDepartments = () => {
         return;
       }
       console.table(rows);
+      afterChoice();
     });
 };
 
@@ -25,6 +28,7 @@ const addDepartment = () => {
             return;
         }
         getDepartments();
+        afterChoice();
         });
 };
 
@@ -46,7 +50,6 @@ const deleteDepartment = () => {
 
 
 module.exports = {
-    getDepartments,
     addDepartment,
     deleteDepartment
 };

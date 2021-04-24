@@ -77,13 +77,13 @@ const getEmployeesByManager = () => {
 // Add an employee
 const addEmployee = () => {
   const sql = `INSERT INTO employees (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?);`;
-  let params = ["Monica", "Chandler", 1, 1];
+  // let params = ["Monica", "Chandler", 1, 1];
   db.query(sql, params, (err, result) => {
       if (err) {
           console.log(err);
           return;
       }
-      getOneEmployee();
+      console.table(result);
       });
 };
 
