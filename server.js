@@ -202,7 +202,7 @@ const deptAdder = () => {
   })
 };
 
-const roleAdder = () => {
+const roleAdder = async () => {
   // query to pull departments
   const depNameSql = `SELECT departments.department_name 
   FROM role 
@@ -211,7 +211,7 @@ const roleAdder = () => {
   // empty array to add department name into
   const deptChoices = [];
   // query and for loop to put one of each department name into array
-  db.query(depNameSql, (error, rows) => {
+  await db.query(depNameSql, (error, rows) => {
     for (let i = 0; i < rows.length; i++) {
       if (deptChoices.indexOf(rows[i].name) === -1) {
         deptChoices.push(rows[i].name);
