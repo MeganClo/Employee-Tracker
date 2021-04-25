@@ -1,17 +1,17 @@
 const db = require("../db/connection");
 
 // Pulling from DB to pass into choices
-let deptChoices = []
-const addRoleSql = `SELECT 
-departments.department_name FROM role
-LEFT JOIN departments ON role.department_id = departments.id;`
-db.query(addRoleSql, (err, rows) => {
-    for (let i = 0; i < rows.length; i++) {
-        if(deptChoices.indexOf(rows[i].name) === -1) {
-            deptChoices.push(rows[i].name)
-        }    
-    }
-});
+// let deptChoices = []
+// const addRoleSql = `SELECT 
+// departments.department_name FROM role
+// LEFT JOIN departments ON role.department_id = departments.id;`
+// db.query(addRoleSql, (err, rows) => {
+//     for (let i = 0; i < rows.length; i++) {
+//         if(deptChoices.indexOf(rows[i].name) === -1) {
+//             deptChoices.push(rows[i].name)
+//         }    
+//     }
+// });
 
 // inquirer questions
 const starterQuestion = [
@@ -93,41 +93,41 @@ const departmentAdd = [
 ];
 
 // Prompt to get role info
-const roleAdd = [
-    {
-        type: "input",
-        name: "roleName",
-        message: "Please enter the name of the new role/title.",
-        validate: roleNameInput => {
-            if (roleNameInput) {
-                return true;
-            } else {
-                console.log("You must enter a name for the role you want to add.")
-                return false;
-            }
-        }
-    },
-    {
-        type: "input",
-        name: "roleSalary",
-        message: "What is the salary for this new role?",
-        validate: roleSalaryInput => {
-            if (roleSalaryInput) {
-                return true;
-            } else {
-                console.log("You must enter a salary for this role.")
-                return false;
-            }
-        }
-    },
-    {
-        type: "list",
-        name: "deptNameChoice",
-        message: "What is this role's department?",
-        choices: deptChoices
+// const roleAdd = [
+//     {
+//         type: "input",
+//         name: "roleName",
+//         message: "Please enter the name of the new role/title.",
+        // validate: roleNameInput => {
+        //     if (roleNameInput) {
+        //         return true;
+        //     } else {
+        //         console.log("You must enter a name for the role you want to add.")
+        //         return false;
+        //     }
+        // }
+//     },
+//     {
+//         type: "input",
+//         name: "roleSalary",
+//         message: "What is the salary for this new role?",
+        // validate: roleSalaryInput => {
+        //     if (roleSalaryInput) {
+        //         return true;
+        //     } else {
+        //         console.log("You must enter a salary for this role.")
+        //         return false;
+        //     }
+        // }
+//     },
+//     {
+//         type: "list",
+//         name: "deptNameChoice",
+//         message: "What is this role's department?",
+//         choices: deptChoices
 
-    }
-];
+//     }
+// ];
 
 // Prompt to get role info
 const empAdd = [
@@ -206,6 +206,6 @@ module.exports = {
     whichViewAll,
     departmentAdd,
     whichAdd,
-    roleAdd,
+
     after
 };
