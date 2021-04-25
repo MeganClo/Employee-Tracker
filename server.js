@@ -1,10 +1,21 @@
 const inquirer = require('inquirer');
 const db = require("./db/connection");
+const figlet = require("figlet");
 
 // const {deleteDepartment } = require("./utils/department");
 // const { deleteEmployee, getOneEmployee, addEmployee, getEmployeesByManager } = require("./utils/employee");
 // const { addRole, deleteRole } = require("./utils/role");
 const { starterQuestion, whichViewAll, departmentAdd, whichAdd, checkQuestion, roleAdd, after } = require("./utils/inquirer");
+
+figlet('Employee Tracker', function(err, data) {
+  if (err) {
+      console.log('Something went wrong...');
+      console.dir(err);
+      return;
+  }
+  console.log(data);
+  start();
+});
 
 // function that gets to start application off
 const start = () => {
@@ -15,6 +26,17 @@ const start = () => {
     }
     if (response.mainQuestion === "Add a department, role, or employee") {
       addingStuff()
+    }
+    if (response.mainQuestion === "Quit") {
+      figlet('Good Bye', function(err, data) {
+        if (err) {
+            console.log('Something went wrong...');
+            console.dir(err);
+            return;
+        }
+        console.log(data);
+      });
+      process.exit();
     }
   })
 };
@@ -27,6 +49,14 @@ const afterChoice = () =>  {
       start();
     }
     if (response.after === "Quit") {
+      figlet('Good Bye', function(err, data) {
+        if (err) {
+            console.log('Something went wrong...');
+            console.dir(err);
+            return;
+        }
+        console.log(data);
+      });
       process.exit();
     }
   })
@@ -111,7 +141,6 @@ const addDepartment = () => {
 // add a role query
 const addRole = () => {
   const sql = `INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?);`;
-  // let params = ["Quidditch Coach", 400.00, 1];
   db.query(sql, params, (err, result) => {
       if (err) {
           console.log(err);
@@ -143,19 +172,19 @@ const addingStuff = () => {
   return inquirer.prompt(whichAdd)
   .then (response => {
     if (response.addAWhat === "Add a department"){
-      deptAdd();
+      deptAdder();
     }
     if (response.addAWhat === "Add a role") {
       roleAdder();
     }
     if (response.addAWhat === "Add an employee") {
-      
+      employeeAdder();
     }
   })
 };
 
 // function to add a department
-const deptAdd = () => {
+const deptAdder = () => {
   return inquirer.prompt(departmentAdd)
   .then (response => {
     params = response.addDepartment;
@@ -164,15 +193,13 @@ const deptAdd = () => {
     .then (answerCheckData => {
       if (answerCheckData.check === "Yes, take me to the next step."){
         addDepartment();
-      } else {deptAdd();}
+      } else {deptAdder();}
     })
     .catch(err => {
       console.log(err);
     })
   })
 };
-
-
 
 
 const roleAdder = () => {
@@ -192,5 +219,5 @@ const roleAdder = () => {
   })
 }
 
-start();
+
 

@@ -1,3 +1,18 @@
+const db = require("../db/connection");
+
+// Pulling from DB to pass into choices
+let deptChoices = []
+const addRoleSql = `SELECT 
+departments.department_name FROM role
+LEFT JOIN departments ON role.department_id = departments.id;`
+db.query(addRoleSql, (err, rows) => {
+    for (let i = 0; i < rows.length; i++) {
+        if(deptChoices.indexOf(rows[i].name) === -1) {
+            deptChoices.push(rows[i].name)
+        }    
+    }
+});
+
 // inquirer questions
 const starterQuestion = [
     {
@@ -106,14 +121,65 @@ const roleAdd = [
         }
     },
     {
+        type: "list",
+        name: "deptNameChoice",
+        message: "What is this role's department?",
+        choices: deptChoices
+
+    }
+];
+
+// Prompt to get role info
+const empAdd = [
+    {
         type: "input",
-        name: "roleId",
-        message: "What is the id for this new role",
-        validate: roleIdInput => {
-            if (roleIdInput) {
+        name: "firstName",
+        message: "Please enter this employee's first name",
+        validate: firstNameInput => {
+            if (firstNameInput) {
                 return true;
             } else {
-                console.log("You must enter an id for this role")
+                console.log("You must enter this employee's first name.")
+                return false;
+            }
+        }
+    },
+    {
+        type: "input",
+        name: "lastName",
+        message: "Please enter this employee's last name",
+        validate: lastNameInput => {
+            if (lastNameInput) {
+                return true;
+            } else {
+                console.log("You must enter this employee's last name.")
+                return false;
+            }
+        }
+    },
+    {
+        type: "input",
+        name: "empRoleId",
+        message: "What is the id for this employee's role",
+        validate: empRoleIdInput => {
+            if (empRoleIdInput) {
+                return true;
+            } else {
+                console.log("You must enter an id for this employee's role.")
+                return false;
+            }
+        }
+
+    },
+    {
+        type: "input",
+        name: "empRoleId",
+        message: "What is the id for this employee's role",
+        validate: empRoleIdInput => {
+            if (empRoleIdInput) {
+                return true;
+            } else {
+                console.log("You must enter an id for this employee's role.")
                 return false;
             }
         }
