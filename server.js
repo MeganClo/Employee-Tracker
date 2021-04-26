@@ -377,7 +377,15 @@ const employeeAdder = () => {
 };
 
 const updateEmployee = () => {
-  const updateSql = 
+  const updateSql = `SELECT
+  CONCAT (employees.first_name, " ", employees.last_name) AS "Name" FROM employees;`;
+  db.query(updateSql, (err, response) => {
+    let empNames = [];
+    for (let i = 0; i < rows.length; i++) {
+      empNames.push(rows[i].name)
+    }
+    console.log(empNames);
+  })
 }
 
 
