@@ -202,26 +202,16 @@ const deptAdder = () => {
   })
 };
 
-const roleAdder = async () => {
-  // query to pull departments
-  const depNameSql = `SELECT departments.department_name 
-  FROM role 
-  LEFT JOIN departments 
-  ON role.department_id = departments.id;`;
-  // empty array to add department name into
-  const deptChoices = [];
-  // query and for loop to put one of each department name into array
-  db.query(depNameSql, (error, rows) => {
+
+const roleAdder = () => {
+  const depNameSql = `SELECT departments.department_name FROM departments;`;
+  db.query(depNameSql, (err, rows) => {
+    if (err) {
+      console.log(err);
+      return;
+    }
+    let deptChoices = [rows];
     console.log(rows);
-    for (let i = 0; i < rows.length; i++) {
-      if (deptChoices.indexOf(rows[i].department_name) === -1) {
-        deptChoices.push(rows[i].department_name);
-      }
-    }
-    if (error) {
-      console.log(error);
-    }
-    console.log(deptChoices);
     inquirer.prompt([
       {
         type: 'input',
@@ -256,26 +246,82 @@ const roleAdder = async () => {
         choices: deptChoices
       }
     ])
-    .then(response => {
-      const getDepartIdSql = `SELECT id FROM departments WHERE name = '${response.department}';`
-      let department_id;
-  
-      db.query(getDepartIdSql, (err, rows) => {
-        department_id = rows[0].id;
-  
-        const sql = `INSERT INTO roles (title, salary, department_id) VALUES (?,?,?);`
-        const params = [`${response.title}`, response.salary, department_id];
-  
-        db.query(sql, params, (err, rows) => {
-          console.log(rows);
-          console.log(`${response.title} successfully added to Roles database!`);
-        })
-      });
-    });
-
   })
-
 };
+// const roleAdder = async () => {
+//   // query to pull departments
+//   const depNameSql = `SELECT departments.department_name 
+//   FROM role 
+//   LEFT JOIN departments 
+//   ON role.department_id = departments.id;`;
+//   // empty array to add department name into
+//   const deptChoices = [];
+//   // query and for loop to put one of each department name into array
+//   db.query(depNameSql, (error, rows) => {
+//     console.log(rows);
+//     for (let i = 0; i < rows.length; i++) {
+//       if (deptChoices.indexOf(rows[i].department_name) === -1) {
+//         deptChoices.push(rows[i].department_name);
+//       }
+//     }
+//     if (error) {
+//       console.log(error);
+//     }
+//     console.log(deptChoices);
+    // inquirer.prompt([
+    //   {
+    //     type: 'input',
+    //     name: 'roleName',
+    //     message: 'Please enter the name of the new role/title',
+    //     validate: roleNameInput => {
+    //       if (roleNameInput) {
+    //           return true;
+    //       } else {
+    //           console.log("You must enter a name for the role you want to add.")
+    //           return false;
+    //       }
+    //   } 
+    //   },
+    //   {
+    //     type: 'number',
+    //     name: 'roleSalary',
+    //     message: 'What is the salary for this role?',
+    //             validate: roleSalaryInput => {
+    //           if (roleSalaryInput) {
+    //               return true;
+    //           } else {
+    //               console.log("You must enter a salary for this role.")
+    //               return false;
+    //           }
+    //       }
+    //   },
+    //   {
+    //     type: 'list',
+    //     name: 'department',
+    //     message: 'What department does this role belong to?',
+    //     choices: deptChoices
+    //   }
+    // ])
+//     .then(response => {
+//       const getDepartIdSql = `SELECT id FROM departments WHERE name = '${response.department}';`
+//       let department_id;
+  
+//       db.query(getDepartIdSql, (err, rows) => {
+//         department_id = rows[0].id;
+  
+//         const sql = `INSERT INTO roles (title, salary, department_id) VALUES (?,?,?);`
+//         const params = [`${response.title}`, response.salary, department_id];
+  
+//         db.query(sql, params, (err, rows) => {
+//           console.log(rows);
+//           console.log(`${response.title} successfully added to Roles database!`);
+//         })
+//       });
+//     });
+
+//   })
+
+// };
 
 // const roleAdder = () => {
 //   // Pulling from DB to pass into choices
