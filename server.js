@@ -346,20 +346,25 @@ const employeeAdder = () => {
       console.table(response);
       const manName = response.empManagerId;
       params = [response.firstName, response.lastName];
-      let toPassIn = response.employeeRole;
+      let toPassInRole = response.employeeRole;
       // console.log(manName);
       let manNameSplit = manName.split(" ");
       console.log(manNameSplit);
-      answerCheck()
+        answerCheck()
         .then(answerCheckData => {
           if (answerCheckData.check === "Yes, take me to the next step.") {
-            const getEmpRoleIdSql = `SELECT id FROM role WHERE role.title = "${toPassIn}";`;
+            const getEmpRoleIdSql = `SELECT id FROM role WHERE role.title = "${toPassInRole}";`;
             db.query(getEmpRoleIdSql, (err, response) => {
+              // console.log(response);
+              params.push(response[0].id);
+              // console.log(params)
+            })
+            const getManIdSql = `SELECT id FROM employees WHERE first_name = '${manNameSplit[0]}' AND last_name = '${manNameSplit[1]}';`;
+            db.query(getManIdSql, (err, response) => {
               console.log(response);
               params.push(response[0].id);
-              console.log(params)
+              console.log(params);
             })
-
           // console.log(managerName);  
           }
         })
