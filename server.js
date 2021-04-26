@@ -352,7 +352,7 @@ const employeeAdder = () => {
       // console.log(manName);
       let manNameSplit = manName.split(" ");
       console.log(manNameSplit);
-        answerCheck()
+      answerCheck()
         .then(answerCheckData => {
           if (answerCheckData.check === "Yes, take me to the next step.") {
             const getEmpRoleIdSql = `SELECT id FROM role WHERE role.title = "${toPassInRole}";`;
@@ -368,7 +368,7 @@ const employeeAdder = () => {
               // console.log(params);
               addEmployee();
             })
-          } else { employeeAdder();}
+          } else { employeeAdder(); }
         })
         .catch(err => {
           console.log(err);
@@ -377,25 +377,45 @@ const employeeAdder = () => {
 };
 
 const updateEmployee = () => {
-  const updateSql = `SELECT
-  CONCAT (employees.first_name, " ", employees.last_name) AS "Name" FROM employees;`;
+  const updateSql = `SELECT CONCAT (employees.first_name, " ", employees.last_name) AS "Name" FROM employees;`;
+  let empNames = [];
+  const updateSql2 = `SELECT title FROM role;`;
+  let roleOptions = [];
   db.query(updateSql, (err, rows) => {
-    let empNames = [];
     // console.log(rows);
     for (let i = 0; i < rows.length; i++) {
       empNames.push(rows[i].Name)
     }
-    console.log(empNames);
-  })
-  const updateSql2 = `SELECT title FROM role;`
-  db.query(updateSql2, (err, rows) => {
-    let roleOptions = [];
+    // console.log(empNames);
+  });
+    db.query(updateSql2, (err, rows) => {
     // console.log(rows);
     for (let i = 0; i < rows.length; i++) {
       roleOptions.push(rows[i].title)
     }
-    console.log(roleOptions);
-  })
+    // console.log(roleOptions);
+  });
+  // console.log(empNames);
+  // Questions to get update Employee information
+  const updateQuestions = [
+    {
+      type: "list",
+      name: "employeeNames",
+      message: "Choose the employee you'd like to update",
+      choices: empNames
+    },
+    {
+      type: "list",
+      name: "roles",
+      message: "Which role does this employee now have?",
+      choices: roleOptions
+    }
+  ];
+  console.log(empNames);
+  // return inquirer.prompt(updateQuestions)
+  //   .then(response => {
+  //     console.log(response);
+  //   })
 };
 
 
