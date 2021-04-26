@@ -2,12 +2,9 @@ const inquirer = require('inquirer');
 const db = require("./db/connection");
 require("console.table");
 const figlet = require("figlet");
-
-// const {deleteDepartment } = require("./utils/department");
-// const { deleteEmployee, getOneEmployee, addEmployee, getEmployeesByManager } = require("./utils/employee");
-// const { addRole, deleteRole } = require("./utils/role");
 const { starterQuestion, whichViewAll, departmentAdd, whichAdd, checkQuestion, after } = require("./utils/inquirer");
 
+// fun graphics to open application
 figlet('Employee Tracker', function (err, data) {
   if (err) {
     console.log('Something went wrong...');
@@ -216,6 +213,7 @@ const deptAdder = () => {
     })
 };
 
+// function to add a role
 const roleAdder = () => {
   // Pulling from DB to pass into choices
   const addRoleSql = `SELECT departments.department_name FROM role LEFT JOIN departments ON role.department_id = departments.id;`;
@@ -283,6 +281,7 @@ const roleAdder = () => {
     })
 };
 
+// function to add employee
 const employeeAdder = () => {
   // Pulling from DB to pass into choices
   const roleSql = `SELECT role.title FROM role;`;
@@ -302,7 +301,7 @@ const employeeAdder = () => {
       manChoices.push(rows[i].Name);
     }
   })
-
+  // questions to get data to pass into query
   const empAdd = [
     {
       type: "input",
@@ -349,9 +348,8 @@ const employeeAdder = () => {
       const manName = response.empManagerId;
       params = [response.firstName, response.lastName];
       let toPassInRole = response.employeeRole;
-      // console.log(manName);
+      // splitting the name to get id from database
       let manNameSplit = manName.split(" ");
-      console.log(manNameSplit);
       answerCheck()
         .then(answerCheckData => {
           if (answerCheckData.check === "Yes, take me to the next step.") {
@@ -376,6 +374,7 @@ const employeeAdder = () => {
     })
 };
 
+// function to update an employee
 const updateEmployee = () => {
   const updateSql = `SELECT CONCAT (employees.first_name, " ", employees.last_name) AS "Name" FROM employees;`;
   let empNames = [];
@@ -392,9 +391,7 @@ const updateEmployee = () => {
     for (let i = 0; i < rows.length; i++) {
       roleOptions.push(rows[i].title)
     }
-    // console.log(roleOptions);
   })
-  // console.log(empNames);
   // Questions to get update Employee information
   const update = [
   
@@ -411,6 +408,7 @@ const updateEmployee = () => {
       choices: roleOptions
     }
   ];
+  // setting timer to give database enough time to pull information (will want to change to async in the future)
   setTimeout(() => {
     return inquirer.prompt(update)
       .then(response => {
