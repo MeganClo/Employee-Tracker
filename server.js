@@ -344,10 +344,12 @@ const employeeAdder = () => {
   return inquirer.prompt(empAdd)
     .then(response => {
       console.table(response);
-      console.log(response.empManagerId);
+      const manName = response.empManagerId;
       params = [response.firstName, response.lastName];
       let toPassIn = response.employeeRole;
-      console.log(toPassIn);
+      // console.log(manName);
+      let manNameSplit = manName.split(" ");
+      console.log(manNameSplit);
       answerCheck()
         .then(answerCheckData => {
           if (answerCheckData.check === "Yes, take me to the next step.") {
