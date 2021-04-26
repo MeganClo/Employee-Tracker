@@ -135,7 +135,6 @@ const addDepartment = () => {
           return;
       }
       getDepartments();
-      afterChoice();
       });
 };
 
@@ -148,7 +147,6 @@ const addRole = () => {
           return;
       }
       getRoles();
-      afterChoice();
       });
 };
 
@@ -253,32 +251,22 @@ const roleAdder = () => {
   ];
   return inquirer.prompt(roleAdd)
   .then (response => {
-    console.log(response);
+    console.table(response);
     params = [response.roleName, response.roleSalary];
-    const getDepartIdSql = `SELECT id FROM departments WHERE department_name = '${response.deptNameChoice}';`
-    db.query(getDepartIdSql, (err, response) => {
-      // console.log(response[0].id);
-      params.push(response[0].id);
-      console.log(params[0], params [1]);
-      answerCheck()
-      .then (answerCheckData => {
-        if (answerCheckData.check === "Yes, take me to the next step.") {
+    answerCheck()
+    .then (answerCheckData => {
+      if (answerCheckData.check === "Yes, take me to the next step.") {
+        const getDepartIdSql = `SELECT id FROM departments WHERE department_name = '${response.deptNameChoice}';`
+        db.query(getDepartIdSql, (err, response) => {
+          params.push(response[0].id);
           addRole();
-        } else {roleAdder();}
-      })
-      .catch(err => {
-        console.log(err);
-      })
+        })
+      } else {roleAdder();}
     })
-    // answerCheck()
-    // .then(answerCheckData => {
-    //   if (answerCheckData.check === "Yes, take me to the next step.") {
-    //     addRole();
-    //   } else {roleAdder();}
-    // })
-    // .catch(err => {
-    //   console.log(err);
-    // })
+    .catch(err => {
+      console.log(err);
+    })
+    
   })
 };
 
