@@ -309,10 +309,12 @@ const roleAdder = async () => {
       const getDepartIdSql = `SELECT id FROM departments WHERE department_name = '${response.department}';`
           db.query(getDepartIdSql, (err, response) => {
             console.log(response);
+            console.log(response[0])
+            console.log(response[0].id);
+            let department_id = (response.id)
 
-
-        const params = [`${response.title}`, response.salary, department_id];
-        addRole();
+        // const params = [`${response.title}`, response.salary, department_id];
+        // addRole();
 
 
       });
