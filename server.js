@@ -386,7 +386,6 @@ const updateEmployee = () => {
     for (let i = 0; i < rows.length; i++) {
       empNames.push(rows[i].Name)
     }
-    // console.log(empNames);
   });
     db.query(updateSql2, (err, rows) => {
     // console.log(rows);
@@ -394,10 +393,11 @@ const updateEmployee = () => {
       roleOptions.push(rows[i].title)
     }
     // console.log(roleOptions);
-  });
+  })
   // console.log(empNames);
   // Questions to get update Employee information
-  const updateQuestions = [
+  const update = [
+  
     {
       type: "list",
       name: "employeeNames",
@@ -411,11 +411,20 @@ const updateEmployee = () => {
       choices: roleOptions
     }
   ];
-  console.log(empNames);
-  // return inquirer.prompt(updateQuestions)
-  //   .then(response => {
-  //     console.log(response);
-  //   })
+  setTimeout(() => {
+    return inquirer.prompt(update)
+      .then(response => {
+        console.table(response);
+        answerCheck()
+          .then(answerCheckData => {
+            if (answerCheckData.check === "Yes, take me to the next step.") {
+              const roleIdSql = `SELECT id FROM role WHERE role.title = '${response.roles}';`;
+              let thisEmpName = response.employeeNames;
+              console.log(thisEmpName);
+            }
+          })
+      })
+  },1000)
 };
 
 
