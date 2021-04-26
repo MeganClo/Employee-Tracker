@@ -379,14 +379,24 @@ const employeeAdder = () => {
 const updateEmployee = () => {
   const updateSql = `SELECT
   CONCAT (employees.first_name, " ", employees.last_name) AS "Name" FROM employees;`;
-  db.query(updateSql, (err, response) => {
+  db.query(updateSql, (err, rows) => {
     let empNames = [];
+    // console.log(rows);
     for (let i = 0; i < rows.length; i++) {
-      empNames.push(rows[i].name)
+      empNames.push(rows[i].Name)
     }
     console.log(empNames);
   })
-}
+  const updateSql2 = `SELECT title FROM role;`
+  db.query(updateSql2, (err, rows) => {
+    let roleOptions = [];
+    // console.log(rows);
+    for (let i = 0; i < rows.length; i++) {
+      roleOptions.push(rows[i].title)
+    }
+    console.log(roleOptions);
+  })
+};
 
 
 
