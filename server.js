@@ -290,9 +290,25 @@ const employeeAdder = () => {
   db.query(addEmpSql, (err, rows) => {
    console.log(rows);
    for (let i = 0; i < rows.length; i++) {
-     roleChoices = rows[i].title;
-     console.log(roleChoices);
+     choices = rows[i].title;
+    //  console.log(roleChoices);
+    roleChoices.push(choices);
+    console.log(roleChoices);
    }
+  });
+  const managerSql = `SELECT
+  employees.id,
+  CONCAT (employees.first_name, " ", employees.last_name) AS "name" FROM employees;`;
+  let managerChoices = [];
+  db.query(managerSql, (err, rows) => {
+    // console.log(rows);
+    for (let i = 0; i < rows.length; i++) {
+      managerChoices += rows[i].name;
+      // console.log(managerChoices);
+     //  console.log(roleChoices);
+    //  managerChoices.push(choices);
+    //  console.log(managerChoices);
+    }
   });
   const empAdd = [
     {
@@ -328,37 +344,29 @@ const employeeAdder = () => {
         choices: roleChoices
     },
     {
-        type: "input",
+        type: "list",
         name: "empManagerId",
-        message: "What is the id for this employee's role",
-        validate: empManagerIdInput => {
-            if (empManagerIdInput) {
-                return true;
-            } else {
-                console.log("You must enter an id for this employee's role.")
-                return false;
-            }
-        }
-
+        message: "Who is this employee's manager?",
+        choices: [managerChoices]
     }
 ];
-  // return inquirer.prompt(roleAdd)
+  // return inquirer.prompt(empAdd)
   // .then (response => {
   //   console.table(response);
-  //   params = [response.roleName, response.roleSalary];
-  //   answerCheck()
-  //   .then (answerCheckData => {
-  //     if (answerCheckData.check === "Yes, take me to the next step.") {
-  //       const getDepartIdSql = `SELECT id FROM departments WHERE department_name = '${response.deptNameChoice}';`
-  //       db.query(getDepartIdSql, (err, response) => {
-  //         params.push(response[0].id);
-  //         addRole();
-  //       })
-  //     } else {roleAdder();}
-  //   })
-  //   .catch(err => {
-  //     console.log(err);
-  //   })    
+    // params = [response.roleName, response.roleSalary];
+    // answerCheck()
+    // .then (answerCheckData => {
+    //   if (answerCheckData.check === "Yes, take me to the next step.") {
+    //     const getDepartIdSql = `SELECT id FROM departments WHERE department_name = '${response.deptNameChoice}';`
+    //     db.query(getDepartIdSql, (err, response) => {
+    //       params.push(response[0].id);
+    //       addRole();
+    //     })
+    //   } else {roleAdder();}
+    // })
+    // .catch(err => {
+    //   console.log(err);
+    // })    
   // })
 };
 
