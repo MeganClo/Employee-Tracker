@@ -285,71 +285,74 @@ const roleAdder = () => {
 
 const employeeAdder = () => {
   // Pulling from DB to pass into choices
-  const addEmpSql = `SELECT role.title FROM role;`;
-  let roleChoices = [];
-  db.query(addEmpSql, (err, rows) => {
-   console.log(rows);
-   for (let i = 0; i < rows.length; i++) {
-     choices = rows[i].title;
-    //  console.log(roleChoices);
-    roleChoices.push(choices);
-    console.log(roleChoices);
-   }
+  let roles = [];
+  const roleSql = `SELECT role.title FROM role;`;
+  db.query(roleSql, (err, rows) => {
+    console.log(rows);
+    db.query(roleSql, (err, rows) => {
+      for (let i = 0; i < rows.length; i++) {
+          roles.push(rows[i].title);
+        }
+        console.log(roles)
+      
+    });
+
+    // }
   });
-  const managerSql = `SELECT
-  employees.id,
-  CONCAT (employees.first_name, " ", employees.last_name) AS "name" FROM employees;`;
-  let managerChoices = [];
-  db.query(managerSql, (err, rows) => {
+  // const managerSql = `SELECT
+  // employees.id,
+  // CONCAT (employees.first_name, " ", employees.last_name) AS "name" FROM employees;`;
+  // let managerChoices = [];
+  // db.query(managerSql, (err, rows) => {
     // console.log(rows);
-    for (let i = 0; i < rows.length; i++) {
-      managerChoices += rows[i].name;
+    // for (let i = 0; i < rows.length; i++) {
+    //   managerChoices += rows[i].name;
       // console.log(managerChoices);
      //  console.log(roleChoices);
     //  managerChoices.push(choices);
     //  console.log(managerChoices);
     }
-  });
-  const empAdd = [
-    {
-        type: "input",
-        name: "firstName",
-        message: "Please enter this employee's first name",
-        validate: firstNameInput => {
-            if (firstNameInput) {
-                return true;
-            } else {
-                console.log("You must enter this employee's first name.")
-                return false;
-            }
-        }
-    },
-    {
-        type: "input",
-        name: "lastName",
-        message: "Please enter this employee's last name",
-        validate: lastNameInput => {
-            if (lastNameInput) {
-                return true;
-            } else {
-                console.log("You must enter this employee's last name.")
-                return false;
-            }
-        }
-    },
-    {
-        type: "list",
-        name: "employeeRole",
-        message: "What is the title for this employee?",
-        choices: roleChoices
-    },
-    {
-        type: "list",
-        name: "empManagerId",
-        message: "Who is this employee's manager?",
-        choices: [managerChoices]
-    }
-];
+  // });
+//   const empAdd = [
+//     {
+//         type: "input",
+//         name: "firstName",
+//         message: "Please enter this employee's first name",
+//         validate: firstNameInput => {
+//             if (firstNameInput) {
+//                 return true;
+//             } else {
+//                 console.log("You must enter this employee's first name.")
+//                 return false;
+//             }
+//         }
+//     },
+//     {
+//         type: "input",
+//         name: "lastName",
+//         message: "Please enter this employee's last name",
+//         validate: lastNameInput => {
+//             if (lastNameInput) {
+//                 return true;
+//             } else {
+//                 console.log("You must enter this employee's last name.")
+//                 return false;
+//             }
+//         }
+//     },
+//     {
+//         type: "list",
+//         name: "employeeRole",
+//         message: "What is the title for this employee?",
+//         choices: 
+//     },
+//     {
+//         type: "list",
+//         name: "empManagerId",
+//         message: "Who is this employee's manager?",
+//         choices: [managerChoices]
+//     }
+// ];
   // return inquirer.prompt(empAdd)
   // .then (response => {
   //   console.table(response);
@@ -368,7 +371,7 @@ const employeeAdder = () => {
     //   console.log(err);
     // })    
   // })
-};
+// };
 
 
 
