@@ -28,6 +28,7 @@ const start = () => {
     if (response.mainQuestion === "Add a department, role, or employee") {
       addingStuff()
     }
+    // if (response.mainQuestion === "")
     if (response.mainQuestion === "Quit") {
       figlet('Good Bye', function(err, data) {
         if (err) {
@@ -150,6 +151,19 @@ const addRole = () => {
       });
 };
 
+// add an employee query
+const addEmployee = () => {
+  const sql = `INSERT INTO employees (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?);`;
+  // let params = ["Monica", "Chandler", 1, 1];
+  db.query(sql, params, (err, result) => {
+      if (err) {
+          console.log(err);
+          return;
+      }
+      getEmployees();
+      });
+};
+
 // function called when user wants to view all of something
 const viewAll = () => {
   return inquirer.prompt(whichViewAll)
@@ -265,9 +279,87 @@ const roleAdder = () => {
     })
     .catch(err => {
       console.log(err);
-    })
-    
+    })    
   })
+};
+
+const employeeAdder = () => {
+  // Pulling from DB to pass into choices
+  const addEmpSql = `SELECT role.title FROM role;`;
+  let roleChoices = [];
+  db.query(addEmpSql, (err, rows) => {
+   console.log(rows);
+   for (let i = 0; i < rows.length; i++) {
+     roleChoices = rows[i].title;
+     console.log(roleChoices);
+   }
+  });
+  const empAdd = [
+    {
+        type: "input",
+        name: "firstName",
+        message: "Please enter this employee's first name",
+        validate: firstNameInput => {
+            if (firstNameInput) {
+                return true;
+            } else {
+                console.log("You must enter this employee's first name.")
+                return false;
+            }
+        }
+    },
+    {
+        type: "input",
+        name: "lastName",
+        message: "Please enter this employee's last name",
+        validate: lastNameInput => {
+            if (lastNameInput) {
+                return true;
+            } else {
+                console.log("You must enter this employee's last name.")
+                return false;
+            }
+        }
+    },
+    {
+        type: "list",
+        name: "employeeRole",
+        message: "What is the title for this employee?",
+        choices: roleChoices
+    },
+    {
+        type: "input",
+        name: "empManagerId",
+        message: "What is the id for this employee's role",
+        validate: empManagerIdInput => {
+            if (empManagerIdInput) {
+                return true;
+            } else {
+                console.log("You must enter an id for this employee's role.")
+                return false;
+            }
+        }
+
+    }
+];
+  // return inquirer.prompt(roleAdd)
+  // .then (response => {
+  //   console.table(response);
+  //   params = [response.roleName, response.roleSalary];
+  //   answerCheck()
+  //   .then (answerCheckData => {
+  //     if (answerCheckData.check === "Yes, take me to the next step.") {
+  //       const getDepartIdSql = `SELECT id FROM departments WHERE department_name = '${response.deptNameChoice}';`
+  //       db.query(getDepartIdSql, (err, response) => {
+  //         params.push(response[0].id);
+  //         addRole();
+  //       })
+  //     } else {roleAdder();}
+  //   })
+  //   .catch(err => {
+  //     console.log(err);
+  //   })    
+  // })
 };
 
 

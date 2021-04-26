@@ -173,10 +173,10 @@ const empAdd = [
     },
     {
         type: "input",
-        name: "empRoleId",
+        name: "empManagerId",
         message: "What is the id for this employee's role",
-        validate: empRoleIdInput => {
-            if (empRoleIdInput) {
+        validate: empManagerIdInput => {
+            if (empManagerIdInput) {
                 return true;
             } else {
                 console.log("You must enter an id for this employee's role.")
