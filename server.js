@@ -202,193 +202,85 @@ const deptAdder = () => {
   })
 };
 
+const roleAdder = () => {
+  // Pulling from DB to pass into choices
+  const addRoleSql = `SELECT departments.department_name FROM role LEFT JOIN departments ON role.department_id = departments.id;`;
+  let deptChoices = [];
 
-// const roleAdder = () => {
-//   const depNameSql = `SELECT departments.department_name FROM departments;`;
-//   db.query(depNameSql, (err, rows) => {
-//     if (err) {
-//       console.log(err);
-//       return;
-//     }
-//     let deptChoices = ["facilty", "ughman", "jeezelouse"];
-//     console.log(rows);
-
-// }
-// inquirer.prompt([
-//   {
-//     type: 'input',
-//     name: 'roleName',
-//     message: 'Please enter the name of the new role/title',
-//     validate: roleNameInput => {
-//       if (roleNameInput) {
-//           return true;
-//       } else {
-//           console.log("You must enter a name for the role you want to add.")
-//           return false;
-//       }
-//   } 
-//   },
-//   {
-//     type: 'number',
-//     name: 'roleSalary',
-//     message: 'What is the salary for this role?',
-//             validate: roleSalaryInput => {
-//           if (roleSalaryInput) {
-//               return true;
-//           } else {
-//               console.log("You must enter a salary for this role.")
-//               return false;
-//           }
-//       }
-//   },
-//   {
-//     type: 'list',
-//     name: 'department',
-//     message: 'What department does this role belong to?',
-//     choices: deptChoices
-//   }
-// ])
-// });
-// }
-const roleAdder = async () => {
-  // query to pull departments
-  const depNameSql = `SELECT departments.department_name 
-  FROM role 
-  LEFT JOIN departments 
-  ON role.department_id = departments.id;`;
-  // empty array to add department name into
-  const deptChoices = [];
-  // query and for loop to put one of each department name into array
-  db.query(depNameSql, (error, rows) => {
-
+  db.query(addRoleSql, (err, rows) => {
     for (let i = 0; i < rows.length; i++) {
       if (deptChoices.indexOf(rows[i].department_name) === -1) {
         deptChoices.push(rows[i].department_name);
       }
     }
-    if (error) {
-      console.log(error);
-    }
 
-    inquirer.prompt([
-      {
-        type: 'input',
-        name: 'roleName',
-        message: 'Please enter the name of the new role/title',
+  });
+  // Prompt to get role info
+  const roleAdd = [
+    {
+        type: "input",
+        name: "roleName",
+        message: "Please enter the name of the new role/title.",
         validate: roleNameInput => {
-          if (roleNameInput) {
-              return true;
-          } else {
-              console.log("You must enter a name for the role you want to add.")
-              return false;
-          }
-      } 
-      },
-      {
-        type: 'number',
-        name: 'roleSalary',
-        message: 'What is the salary for this role?',
-                validate: roleSalaryInput => {
-              if (roleSalaryInput) {
-                  return true;
-              } else {
-                  console.log("You must enter a salary for this role.")
-                  return false;
-              }
-          }
-      },
-      {
-        type: 'list',
-        name: 'department',
-        message: 'What department does this role belong to?',
+            if (roleNameInput) {
+                return true;
+            } else {
+                console.log("You must enter a name for the role you want to add.")
+                return false;
+            }
+        }
+    },
+    {
+        type: "input",
+        name: "roleSalary",
+        message: "What is the salary for this new role?",
+        validate: roleSalaryInput => {
+            if (roleSalaryInput) {
+                return true;
+            } else {
+                console.log("You must enter a salary for this role.")
+                return false;
+            }
+        }
+    },
+    {
+        type: "list",
+        name: "deptNameChoice",
+        message: "What is this role's department?",
         choices: deptChoices
-      }
-    ])
-    .then(response => {
-      console.log(response.department)
-      const getDepartIdSql = `SELECT id FROM departments WHERE department_name = '${response.department}';`
-          db.query(getDepartIdSql, (err, response) => {
-            console.log(response);
-            console.log(response[0])
-            console.log(response[0].id);
-            let department_id = (response.id)
 
-        // const params = [`${response.title}`, response.salary, department_id];
-        // addRole();
-
-
-      });
-    });
-
+    }
+  ];
+  return inquirer.prompt(roleAdd)
+  .then (response => {
+    console.log(response);
+    params = [response.roleName, response.roleSalary];
+    const getDepartIdSql = `SELECT id FROM departments WHERE department_name = '${response.deptNameChoice}';`
+    db.query(getDepartIdSql, (err, response) => {
+      // console.log(response[0].id);
+      params.push(response[0].id);
+      console.log(params[0], params [1]);
+      answerCheck()
+      .then (answerCheckData => {
+        if (answerCheckData.check === "Yes, take me to the next step.") {
+          addRole();
+        } else {roleAdder();}
+      })
+      .catch(err => {
+        console.log(err);
+      })
+    })
+    // answerCheck()
+    // .then(answerCheckData => {
+    //   if (answerCheckData.check === "Yes, take me to the next step.") {
+    //     addRole();
+    //   } else {roleAdder();}
+    // })
+    // .catch(err => {
+    //   console.log(err);
+    // })
   })
-
 };
-
-// const roleAdder = () => {
-//   // Pulling from DB to pass into choices
-//   const addRoleSql = `SELECT departments.department_name FROM role LEFT JOIN departments ON role.department_id = departments.id;`;
-//   let deptChoices = [];
-
-//   db.query(addRoleSql, (err, rows) => {
-//     for (let i = 0; i < rows.length; i++) {
-//         if(deptChoices.indexOf(rows[i].name) === -1) {
-//             deptChoices.push(rows[i].name)
-//             console.log(deptChoices);
-//         }    
-//     }
-//   });
-//   // Prompt to get role info
-//   const roleAdd = [
-//     {
-//         type: "input",
-//         name: "roleName",
-//         message: "Please enter the name of the new role/title.",
-//         validate: roleNameInput => {
-//             if (roleNameInput) {
-//                 return true;
-//             } else {
-//                 console.log("You must enter a name for the role you want to add.")
-//                 return false;
-//             }
-//         }
-//     },
-//     {
-//         type: "input",
-//         name: "roleSalary",
-//         message: "What is the salary for this new role?",
-//         validate: roleSalaryInput => {
-//             if (roleSalaryInput) {
-//                 return true;
-//             } else {
-//                 console.log("You must enter a salary for this role.")
-//                 return false;
-//             }
-//         }
-//     },
-//     {
-//         type: "list",
-//         name: "deptNameChoice",
-//         message: "What is this role's department?",
-//         choices: deptChoices
-
-//     }
-//   ];
-//   return inquirer.prompt(roleAdd)
-//   .then (response => {
-//     console.log(response);
-//     params = [response.roleName, response.roleSalary, response.deptNameChoice];
-//     console.table(params);
-//     answerCheck()
-//     .then(answerCheckData => {
-//       if (answerCheckData.check === "Yes, take me to the next step.") {
-//         addRole();
-//       } else {roleAdder();}
-//     })
-//     .catch(err => {
-//       console.log(err);
-//     })
-//   })
-// };
 
 
 
