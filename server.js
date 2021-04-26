@@ -418,13 +418,31 @@ const updateEmployee = () => {
         answerCheck()
           .then(answerCheckData => {
             if (answerCheckData.check === "Yes, take me to the next step.") {
-              const roleIdSql = `SELECT id FROM role WHERE role.title = '${response.roles}';`;
+              let params = [];
+              const roleIdSql = `SELECT id FROM role WHERE role.title = "${response.roles}";`;
               let thisEmpName = response.employeeNames;
-              console.log(thisEmpName);
+              // console.log(thisEmpName);
+              let thisName = thisEmpName.split(" ");
+              // console.log(thisName);
+              const getThisEmpSql = `SELECT id FROM employees WHERE first_name = "${thisName[0]}" AND last_name = "${thisName[1]}";`;
+              db.query(roleIdSql, (err, response) => {
+                params.push(response[0].id);
+                db.query(getThisEmpSql, (err, response) => {
+                  // console.log(response);
+                  params.push(response[0].id);
+                  console.log(params);
+                  const upSql = `UPDATE employees SET role_id = ? WHERE id = ?`;
+                  db.query(upSql, params, (err, response) => {
+                    console.log("Employee Updated!");
+                    getEmployees();
+                  })
+                })
+              })
             }
+            else { updateEmployee();}
           })
       })
-  },1000)
+  },500)
 };
 
 
