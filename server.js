@@ -344,6 +344,7 @@ const employeeAdder = () => {
   return inquirer.prompt(empAdd)
     .then(response => {
       console.table(response);
+      console.log(response.empManagerId);
       params = [response.firstName, response.lastName];
       let toPassIn = response.employeeRole;
       console.log(toPassIn);
@@ -356,8 +357,8 @@ const employeeAdder = () => {
               params.push(response[0].id);
               console.log(params)
             })
-          const managerName = `${response.empMangerId}`;
-          console.log(managerName);  
+
+          // console.log(managerName);  
           }
         })
     })
