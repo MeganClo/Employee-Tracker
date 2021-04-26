@@ -356,6 +356,8 @@ const employeeAdder = () => {
               params.push(response[0].id);
               console.log(params)
             })
+          const managerName = `${response.empMangerId}`;
+          console.log(managerName);  
           }
         })
     })
