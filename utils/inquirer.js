@@ -26,9 +26,9 @@ const starterQuestion = [
             "Add a department, role, or employee",
             // "Add a role",
             // "Add an employee",
-            "Update an employee",
-            "Delete department, role or employee",
-            "View departement(s) budget",
+            "Update an employee's role",
+            // "Delete department, role or employee",
+            // "View departement(s) budget",
             "Quit"
             ]
     }

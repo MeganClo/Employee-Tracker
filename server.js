@@ -28,7 +28,9 @@ const start = () => {
       if (response.mainQuestion === "Add a department, role, or employee") {
         addingStuff()
       }
-      // if (response.mainQuestion === "")
+      if (response.mainQuestion === "Update an employee's role") {
+        updateEmployee();
+      }
       if (response.mainQuestion === "Quit") {
         figlet('Good Bye', function (err, data) {
           if (err) {
@@ -363,12 +365,19 @@ const employeeAdder = () => {
             db.query(getManIdSql, (err, response) => {
               console.log(response);
               params.push(response[0].id);
-              console.log(params);
+              // console.log(params);
+              addEmployee();
             })
-          // console.log(managerName);  
-          }
+          } else { employeeAdder();}
+        })
+        .catch(err => {
+          console.log(err);
         })
     })
+};
+
+const updateEmployee = () => {
+  const updateSql = 
 }
 
 
