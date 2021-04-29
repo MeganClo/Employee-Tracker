@@ -216,7 +216,7 @@ const deptAdder = () => {
 // function to add a role
 const roleAdder = () => {
   // Pulling from DB to pass into choices
-  const addRoleSql = `SELECT departments.department_name FROM role LEFT JOIN departments ON role.department_id = departments.id;`;
+  const addRoleSql = `SELECT department_name from departments;`;
   let deptChoices = [];
   db.query(addRoleSql, (err, rows) => {
     for (let i = 0; i < rows.length; i++) {
