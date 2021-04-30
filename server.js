@@ -2,7 +2,7 @@ const inquirer = require('inquirer');
 const db = require("./db/connection");
 require("console.table");
 const figlet = require("figlet");
-const { start } = require("./utils/inquirer");
+const { start } = require("./utils/logic");
 
 // fun graphics to open application
 figlet('Employee Tracker', function (err, data) {
